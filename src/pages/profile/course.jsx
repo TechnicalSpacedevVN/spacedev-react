@@ -7,7 +7,7 @@ import { generatePath, Link } from 'react-router-dom'
 import { PATH } from '../../config/path'
 import { useQuery } from '@/hooks/useQuery'
 export default function MyCourse() {
-    const { data: { data: courses = [] } = {} } = useQuery({
+    const { data: { data: courses = [] } = {}, loading } = useQuery({
         queryFn: () => courseService.getMyCourse(),
         queryKey: 'course-list',
         cacheTime: 10000

@@ -5,14 +5,17 @@ import { useAsync } from '@/hooks/useAsync'
 import { useAuth } from '@/hooks/useAuth'
 import { useForm } from '@/hooks/useForm'
 import { userService } from '@/services/user.service'
+import { authActions } from '@/stores/authReducer'
 import { handleError } from '@/utils/handleError'
 import { regexp, required } from '@/utils/validate'
 import { message } from 'antd'
 import React from 'react'
+import { useDispatch } from 'react-redux'
 
 export default function Profile() {
 
-    const { user, setUser } = useAuth()
+    const dispatch = useDispatch()
+    const { user } = useAuth()
     const { loading, excute: updateInfoService } = useAsync(userService.updateInfo)
     const { register, values, validate } = useForm({
         name: [
@@ -33,7 +36,8 @@ export default function Profile() {
             if(validate()) {
                 const res = await updateInfoService(values)
                 console.log(res)
-                setUser(res.data)
+                // setUser(res.data)
+                dispatch(authActions.setUser(res.data))
                 message.success('Bạn đã cập nhật thông tin tài khoản thành công')
             }
         } catch (err) {
